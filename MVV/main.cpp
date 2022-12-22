@@ -15,17 +15,26 @@ int getmagicnumber(int n){
 char solve(string s) {
     int magicnumber = getmagicnumber(s.length());
     while (s.size() > magicnumber) {
+        int jumpnumber = getmagicnumber(s.size()-magicnumber);
         string newString;
-        for (int i = 0; i < s.size() - 1; i++) {
-            if (s[i] == s[i + 1]) {
-                newString += s[i];
-            } else {
-                if (s[i] != 'R' && s[i + 1] != 'R') {
-                    newString += 'R';
-                } else if (s[i] != 'G' && s[i + 1] != 'G') {
-                    newString += 'G';
+        if(jumpnumber == s.size()){
+            int jumpsize = jumpnumber - magicnumber;
+            string first = reinterpret_cast<const char *>(s[0] + s[jumpsize]);
+            string two = reinterpret_cast<const char *>(s[s.length()-1-jumpsize] + s[s.length()-1]);
+            string newstring = first + two;
+        }
+        else{
+            for (int i = 0; i < s.size() - 1; i++) {
+                if (s[i] == s[i + 1]) {
+                    newString += s[i];
                 } else {
-                    newString += 'B';
+                    if (s[i] != 'R' && s[i + 1] != 'R') {
+                        newString += 'R';
+                    } else if (s[i] != 'G' && s[i + 1] != 'G') {
+                        newString += 'G';
+                    } else {
+                        newString += 'B';
+                    }
                 }
             }
         }
