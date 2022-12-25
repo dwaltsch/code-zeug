@@ -5,7 +5,7 @@
 using namespace std;
 int getmagicnumber(int n){
     int magicnumber = 0;
-    for(int i = 0; (pow(3,i) + 1) <= n ;i ++)
+    for(int i = 0; (pow(3,i) + 1) <= n -1 ;i ++)
     {
         magicnumber = pow(3,i) + 1;
     }
@@ -13,15 +13,36 @@ int getmagicnumber(int n){
 }
 
 char solve(string s) {
+    bool ismagic = false;
+    int size = s.size();
     int magicnumber = getmagicnumber(s.length());
-    while (s.size() > magicnumber) {
-        int jumpnumber = getmagicnumber(s.size()-magicnumber);
+    int jumpnumber = getmagicnumber(s.size()-magicnumber);
+    while (s.size() > magicnumber || ismagic == false) {
         string newString;
-        if(jumpnumber == s.size()){
+        if((size - jumpnumber) == s.size()){
             int jumpsize = jumpnumber - magicnumber;
-            string first = reinterpret_cast<const char *>(s[0] + s[jumpsize]);
-            string two = reinterpret_cast<const char *>(s[s.length()-1-jumpsize] + s[s.length()-1]);
-            string newstring = first + two;
+            string schring;
+            schring += s[0];
+            schring += s[jumpsize];
+            schring += s[s.size() - 1 - jumpsize];
+            schring += s[s.size()-1];
+            string b = schring;
+            for (int i = 0; i < b.size() - 1; i++) {
+                if (b[i] == b[i + 1]) {
+                    newString += b[i];
+                } else {
+                    if (b[i] != 'R' && b[i + 1] != 'R') {
+                        newString += 'R';
+                    } else if (s[i] != 'G' && s[i + 1] != 'G') {
+                        newString += 'G';
+                    } else {
+                        newString += 'B';
+                    }
+                }
+
+            }
+            s = newString;
+            ismagic = true;
         }
         else{
             for (int i = 0; i < s.size() - 1; i++) {
@@ -40,7 +61,7 @@ char solve(string s) {
         }
         s = newString;
     }
-    if(s.size() == magicnumber){
+    if(s.size() == magicnumber || ismagic == true){
         string firstLast;
         firstLast += s[0];
         firstLast += s[s.size()-1];
@@ -60,6 +81,6 @@ char solve(string s) {
 }
 
 int main() {
-    cout << solve("RGBRGBRGBRGBRGRBG") << endl;
+    cout << solve("RRRRRRRRRRRRRRRRRRRRRRRRRR") << endl;
     return 0;
 }
